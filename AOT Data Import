@@ -1,0 +1,264 @@
+# coding: utf-8
+
+# # Airline Transport
+
+# <b>Import Library</b>
+
+# In[1]:
+
+
+import pandas as pd
+import numpy as np
+from os import listdir
+from os.path import isfile, join
+
+
+# <b>Get File Name in Path</b>
+
+# In[2]:
+
+
+mypath=r"C:\Users\jetarin.c\OneDrive - KASIKORNBANKGROUP\เดสก์ท็อป\Transport and Logistic Analysis\Aot Raw Data"
+onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+
+
+# In[3]:
+
+
+onlyfiles
+
+
+# <b>Get Sheet Name</b>
+
+# In[5]:
+
+
+xl = pd.ExcelFile(r'C:\Users\jetarin.c\OneDrive - KASIKORNBANKGROUP\เดสก์ท็อป\Transport and Logistic Analysis\Aot Raw Data\20171030-aot-traffic-fiscal-2017.xlsx')
+xl.sheet_names  # see all sheet names
+
+
+# <b>Read Table and Get Output Table</b>
+
+# In[53]:
+
+
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="B:H",names=["Month","A","D","T","Arrival","Departure","Total"],skiprows=7,nrows=16)
+#Clean Columns name
+df=df[["Month","Arrival","Departure","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="B:H",skiprows=2,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Arrival
+df_Arrival=df[["Month","Arrival","Type"]]
+df_Arrival["Sub_Type"]=list(df_Arrival.columns)[1]
+df_Arrival=df_Arrival.rename(columns={"Arrival": "Value"})
+#Departure
+df_Departure=df[["Month","Departure","Type"]]
+df_Departure["Sub_Type"]=list(df_Departure.columns)[1]
+df_Departure=df_Departure.rename(columns={"Departure": "Value"})
+#Combine
+df_Arrival_Plus_Departure= pd.concat([df_Arrival, df_Departure])
+df_Arrival_Plus_Departure
+
+
+# In[54]:
+
+
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="B:H",names=["Month","A","D","T","Arrival","Departure","Total"],skiprows=33,nrows=16)
+#Clean Columns name
+df=df[["Month","Arrival","Departure","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="B:H",skiprows=28,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Arrival
+df_Arrival=df[["Month","Arrival","Type"]]
+df_Arrival["Sub_Type"]=list(df_Arrival.columns)[1]
+df_Arrival=df_Arrival.rename(columns={"Arrival": "Value"})
+#Departure
+df_Departure=df[["Month","Departure","Type"]]
+df_Departure["Sub_Type"]=list(df_Departure.columns)[1]
+df_Departure=df_Departure.rename(columns={"Departure": "Value"})
+#Combine
+df_Arrival_Plus_Departure= pd.concat([df_Arrival, df_Departure])
+df_Arrival_Plus_Departure
+
+
+# In[55]:
+
+
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="B:H",names=["Month","A","D","T","Arrival","Departure","Total"],skiprows=59,nrows=16)
+#Clean Columns name
+df=df[["Month","Arrival","Departure","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="B:H",skiprows=54,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Arrival
+df_Arrival=df[["Month","Arrival","Type"]]
+df_Arrival["Sub_Type"]=list(df_Arrival.columns)[1]
+df_Arrival=df_Arrival.rename(columns={"Arrival": "Value"})
+#Departure
+df_Departure=df[["Month","Departure","Type"]]
+df_Departure["Sub_Type"]=list(df_Departure.columns)[1]
+df_Departure=df_Departure.rename(columns={"Departure": "Value"})
+#Combine
+df_Arrival_Plus_Departure= pd.concat([df_Arrival, df_Departure])
+df_Arrival_Plus_Departure
+
+
+# In[56]:
+
+
+#Read Table Sheet
+#Embark = ผู้โดยสารขาออก
+#Disembark = ผู้โดยสารขาเข้า
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="L:V",names=["Month","D","E","DE","T","TT","Disembark","Embark","Disembark+Embark","Transit","Total"],skiprows=7,nrows=16)
+#Clean Columns name
+df=df[["Month","Disembark","Embark","Disembark+Embark","Transit","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="L:V",skiprows=2,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Embark
+df_Embark=df[["Month","Embark","Type"]]
+df_Embark["Sub_Type"]=list(df_Embark.columns)[1]
+df_Embark=df_Embark.rename(columns={"Embark": "Value"})
+#Disembark
+df_Disembark=df[["Month","Disembark","Type"]]
+df_Disembark["Sub_Type"]=list(df_Disembark.columns)[1]
+df_Disembark=df_Disembark.rename(columns={"Disembark": "Value"})
+#Transit
+df_Transit=df[["Month","Transit","Type"]]
+df_Transit["Sub_Type"]=list(df_Transit.columns)[1]
+df_Transit=df_Transit.rename(columns={"Transit": "Value"})
+#Combine
+df_Embark_Plus_Disembark_Plus_Transit= pd.concat([df_Embark, df_Disembark,df_Transit])
+df_Embark_Plus_Disembark_Plus_Transit
+
+
+# In[57]:
+
+
+#Read Table Sheet
+#Embark = ผู้โดยสารขาออก
+#Disembark = ผู้โดยสารขาเข้า
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="L:V",names=["Month","D","E","DE","T","TT","Disembark","Embark","Disembark+Embark","Transit","Total"],skiprows=33,nrows=16)
+#Clean Columns name
+df=df[["Month","Disembark","Embark","Disembark+Embark","Transit","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="L:V",skiprows=28,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Embark
+df_Embark=df[["Month","Embark","Type"]]
+df_Embark["Sub_Type"]=list(df_Embark.columns)[1]
+df_Embark=df_Embark.rename(columns={"Embark": "Value"})
+#Disembark
+df_Disembark=df[["Month","Disembark","Type"]]
+df_Disembark["Sub_Type"]=list(df_Disembark.columns)[1]
+df_Disembark=df_Disembark.rename(columns={"Disembark": "Value"})
+#Transit
+df_Transit=df[["Month","Transit","Type"]]
+df_Transit["Sub_Type"]=list(df_Transit.columns)[1]
+df_Transit=df_Transit.rename(columns={"Transit": "Value"})
+#Combine
+df_Embark_Plus_Disembark_Plus_Transit= pd.concat([df_Embark, df_Disembark,df_Transit])
+df_Embark_Plus_Disembark_Plus_Transit
+
+
+# In[58]:
+
+
+#Read Table Sheet
+#Embark = ผู้โดยสารขาออก
+#Disembark = ผู้โดยสารขาเข้า
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="L:V",names=["Month","D","E","DE","T","TT","Disembark","Embark","Disembark+Embark","Transit","Total"],skiprows=59,nrows=16)
+#Clean Columns name
+df=df[["Month","Disembark","Embark","Disembark+Embark","Transit","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="L:V",skiprows=54,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Embark
+df_Embark=df[["Month","Embark","Type"]]
+df_Embark["Sub_Type"]=list(df_Embark.columns)[1]
+df_Embark=df_Embark.rename(columns={"Embark": "Value"})
+#Disembark
+df_Disembark=df[["Month","Disembark","Type"]]
+df_Disembark["Sub_Type"]=list(df_Disembark.columns)[1]
+df_Disembark=df_Disembark.rename(columns={"Disembark": "Value"})
+#Transit
+df_Transit=df[["Month","Transit","Type"]]
+df_Transit["Sub_Type"]=list(df_Transit.columns)[1]
+df_Transit=df_Transit.rename(columns={"Transit": "Value"})
+#Combine
+df_Embark_Plus_Disembark_Plus_Transit= pd.concat([df_Embark, df_Disembark,df_Transit])
+df_Embark_Plus_Disembark_Plus_Transit
+
+
+# In[60]:
+
+
+#Read Table Sheet
+#Embark = ผู้โดยสารขาออก
+#Disembark = ผู้โดยสารขาเข้า
+#Read Table Sheet
+df=xl.parse('BKK+DMK',usecols="L:V",names=["Month","D","E","DE","T","TT","Inbound","Outbound","Inbound+Outbound","Transit","Total"],skiprows=85,nrows=16)
+#Clean Columns name
+df=df[["Month","Inbound","Outbound","Inbound+Outbound","Transit","Total"]]
+#Get only target row
+df["Month"]=df["Month"].str.strip()
+df=df[df["Month"].str.len() <= 4]
+#Add Year to output table
+df["Year"]=2017
+#Add Type to Output Table
+Get_Type=xl.parse('BKK+DMK',usecols="L:V",skiprows=80,nrows=1)
+df["Type"]=list(Get_Type.columns)[0]
+#Embark
+df_Inbound=df[["Month","Inbound","Type"]]
+df_Inbound["Sub_Type"]=list(df_Inbound.columns)[1]
+df_Inbound=df_Inbound.rename(columns={"Inbound": "Value"})
+#Disembark
+df_Outbound=df[["Month","Outbound","Type"]]
+df_Outbound["Sub_Type"]=list(df_Outbound.columns)[1]
+df_Outbound=df_Outbound.rename(columns={"Outbound": "Value"})
+#Transit
+df_Transit=df[["Month","Transit","Type"]]
+df_Transit["Sub_Type"]=list(df_Transit.columns)[1]
+df_Transit=df_Transit.rename(columns={"Transit": "Value"})
+#Combine
+df_Inbound_Plus_Outbound_Plus_Transit= pd.concat([df_Inbound, df_Outbound,df_Transit])
+df_Inbound_Plus_Outbound_Plus_Transit
+
